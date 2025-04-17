@@ -72,8 +72,21 @@
       }
     ];
 
+    // Show startup loading animation
+    const loadingOverlay = document.createElement("div");
+    loadingOverlay.id = "hydro-loading-overlay";
+    loadingOverlay.innerHTML = `
+      <div class="hydro-loading-content">
+        <div class="hydro-loading-spinner"></div>
+        <span>Loading Hydro Editor...</span>
+      </div>
+    `;
+    document.body.appendChild(loadingOverlay);
+
     function loadNext(index) {
       if (index >= scripts.length) {
+        // Remove startup loading animation
+        loadingOverlay.remove();
         callback();
         return;
       }
@@ -118,7 +131,6 @@
       options = options || { esversion: 6 };
       const errors = [];
       try {
-        // Basic syntax check using Function constructor
         new Function(code);
       } catch (e) {
         errors.push({
@@ -128,7 +140,6 @@
           severity: "error"
         });
       }
-      // Simple undefined variable check
       const undefinedVars = code.match(/\b[a-zA-Z_$][a-zA-Z0-9_$]*\b/g) || [];
       undefinedVars.forEach((varName) => {
         if (!/^(function|var|let|const|if|for|while|return|true|false|null|undefined|console|document|window)$/.test(varName) &&
@@ -185,6 +196,68 @@
                 from { opacity: 0; }
                 to { opacity: 1; }
             }
+            @keyframes spin {
+                to { transform: rotate(360deg); }
+            }
+            #hydro-loading-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.8);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 10002;
+                animation: fadeIn 0.3s ease-out;
+            }
+            .hydro-loading-content {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                color: #ffffff;
+                font-family: 'Segoe UI', 'Roboto', sans-serif;
+                font-size: 16px;
+            }
+            .hydro-loading-spinner {
+                width: 40px;
+                height: 40px;
+                border: 4px solid #ffffff;
+                border-top: 4px solid #007acc;
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+                margin-bottom: 10px;
+            }
+            #hydro-executing-overlay {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                display: none;
+                justify-content: center;
+                align-items: center;
+                z-index: 10001;
+            }
+            .hydro-executing-content {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                color: #ffffff;
+                font-family: 'Segoe UI', 'Roboto', sans-serif;
+                font-size: 16px;
+            }
+            .hydro-executing-spinner {
+                width: 30px;
+                height: 30px;
+                border: 3px solid #ffffff;
+                border-top: 3px solid #007acc;
+                border-radius: 50%;
+                animation: spin 0.8s linear infinite;
+                margin-bottom: 8px;
+            }
             .hydro-editor-modal {
                 position: fixed;
                 background: linear-gradient(135deg, #1e1e1e, #252526);
@@ -199,7 +272,6 @@
                 animation: slideIn 0.3s ease-out;
                 color: #d4d4d4;
                 overflow: hidden;
-                z-index: 10000;
             }
             .hydro-editor-header {
                 background: linear-gradient(90deg, #2d2d2d, #333333);
@@ -250,6 +322,7 @@
                 background: #1e1e1e url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAJElEQVQYV2NkYGD4z8DAwMgAB//xQAFgNUEgF6Qe9AAAAAElFTkSuQmCC') repeat;
                 border-radius: 0 0 8px 8px;
                 overflow: hidden;
+                position: relative;
             }
             .hydro-editor-main-content {
                 flex: 1;
@@ -700,6 +773,17 @@
     let content = document.createElement("div");
     content.className = "hydro-editor-content";
 
+    // Add executing overlay
+    let executingOverlay = document.createElement("div");
+    executingOverlay.id = "hydro-executing-overlay";
+    executingOverlay.innerHTML = `
+      <div class="hydro-executing-content">
+        <div class="hydro-executing-spinner"></div>
+        <span>Executing...</span>
+      </div>
+    `;
+    content.appendChild(executingOverlay);
+
     let mainContent = document.createElement("div");
     mainContent.className = "hydro-editor-main-content";
 
@@ -741,7 +825,6 @@
     let toolbarMenu = document.createElement("div");
     toolbarMenu.className = "hydro-editor-toolbar-menu";
 
-    // File Menu
     let fileMenu = document.createElement("div");
     fileMenu.className = "hydro-editor-toolbar-menu-item";
     fileMenu.textContent = "File";
@@ -761,7 +844,6 @@
     fileSubmenu.appendChild(loadUrlBtn);
     fileMenu.appendChild(fileSubmenu);
 
-    // Edit Menu
     let editMenu = document.createElement("div");
     editMenu.className = "hydro-editor-toolbar-menu-item";
     editMenu.textContent = "Edit";
@@ -781,7 +863,6 @@
     editSubmenu.appendChild(formatBtn);
     editMenu.appendChild(editSubmenu);
 
-    // Run Menu
     let runMenu = document.createElement("div");
     runMenu.className = "hydro-editor-toolbar-menu-item";
     runMenu.textContent = "Run";
@@ -798,7 +879,6 @@
     runSubmenu.appendChild(debugBtn);
     runMenu.appendChild(runSubmenu);
 
-    // View Menu
     let viewMenu = document.createElement("div");
     viewMenu.className = "hydro-editor-toolbar-menu-item";
     viewMenu.textContent = "View";
@@ -1057,12 +1137,10 @@
         info: console.info
       };
 
-      // Buffer to store console output during execution
       let outputBuffer = [];
 
-      // Function to capture console output temporarily
       function captureConsole() {
-        outputBuffer = []; // Reset buffer for new execution
+        outputBuffer = [];
 
         console.log = function (...args) {
           outputBuffer.push({ type: "log", message: args.join(" "), timestamp: new Date().toLocaleTimeString() });
@@ -1081,15 +1159,12 @@
           originalConsole.info.apply(console, args);
         };
 
-        // Return function to restore console and append output
         return function restoreConsole() {
-          // Restore original console methods
           console.log = originalConsole.log;
           console.error = originalConsole.error;
           console.warn = originalConsole.warn;
           console.info = originalConsole.info;
 
-          // Append buffered output to console panel
           outputBuffer.forEach(({ type, message, timestamp }) => {
             let formattedMessage = `[${timestamp}] ${message}`;
             if (type === "error") {
@@ -1101,11 +1176,10 @@
             }
             consoleOutputElement.textContent += formattedMessage + "\n";
           });
-          consoleOutputElement.scrollTop = consoleOutputElement.scrollHeight; // Auto-scroll to bottom
+          consoleOutputElement.scrollTop = consoleOutputElement.scrollHeight;
         };
       }
 
-      // Function to clear the console
       function clearConsole() {
         consoleOutputElement.textContent = "";
       }
@@ -1127,11 +1201,11 @@
           return;
         }
       }
+      // Show executing overlay
+      executingOverlay.style.display = "flex";
       try {
-        // Set up console capture
         const restoreConsole = consoleCapture.captureConsole();
 
-        // Execute the code
         const script = document.createElement("script");
         script.textContent = `
             (function() {
@@ -1145,14 +1219,16 @@
         script.type = "module";
 
         document.body.appendChild(script);
-        document.body.removeChild(script); // Remove script after execution
+        document.body.removeChild(script);
 
-        // Restore console and display output
         restoreConsole();
       } catch (error) {
-        consoleCapture.clearConsole(); // Clear console on error
+        consoleCapture.clearConsole();
         consoleOutput.textContent += `[${new Date().toLocaleTimeString()}] ERROR: Execution error: ${error.message}\n`;
         consoleOutput.scrollTop = consoleOutput.scrollHeight;
+      } finally {
+        // Hide executing overlay
+        executingOverlay.style.display = "none";
       }
     }
 
@@ -1168,7 +1244,7 @@
 
     playBtn.addEventListener("click", executeCode);
 
-    const consoleCapture = setupConsoleCapture(consoleOutput); // Initialize console capture
+    const consoleCapture = setupConsoleCapture(consoleOutput);
 
     clearConsoleBtn.addEventListener("click", () => {
       consoleCapture.clearConsole();

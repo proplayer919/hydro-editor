@@ -1,0 +1,22 @@
+# Hydro Editor
+
+Hydro Editor is a browser-based editor for injectable JavaScript scripts. It uses CodeMirror and plain old HTML/CSS/JS.
+
+## Usage
+
+Simply create a new bookmark and enter this in as the URL:
+
+```
+javascript:(function()%7Bconst%20SCRIPT_URL%3D%22https%3A%2F%2Fraw.githubusercontent.com%2Fproplayer919%2Fhydro-editor%2Frefs%2Fheads%2Fmain%2Fhydro.js%22%3Basync%20function%20loadAndRunScript()%7Btry%7Blet%20t%3Dawait%20fetch(%22https%3A%2F%2Fraw.githubusercontent.com%2Fproplayer919%2Fhydro-editor%2Frefs%2Fheads%2Fmain%2Fhydro.js%22)%3Bif(!t.ok)throw%20Error(%60Failed%20to%20fetch%20script%3A%20%24%7Bt.statusText%7D%60)%3Blet%20e%3Dawait%20t.text()%2Cr%3Ddocument.createElement(%22script%22)%3Br.textContent%3De%2Cdocument.body.appendChild(r)%2Cconsole.log(%22Script%20loaded%20and%20executed%20successfully.%22)%7Dcatch(o)%7Bconsole.error(%22Error%20loading%20script%3A%22%2Co)%7D%7DloadAndRunScript()%7D)()
+```
+
+Then, click the bookmark to open Hydro Editor.
+> **Note:** This may not work on sites with a Content Security Policy (CSP).
+
+## How to Use
+
+You will get the hang of it easily. It is very simple.
+
+## Contributors
+
+**proplayer919** - [GitHub](https://github.com/proplayer919) | [Website](https://proplayer919.dev) (Creator)

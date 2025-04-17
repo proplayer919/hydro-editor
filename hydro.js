@@ -470,11 +470,13 @@
             .hydro-editor-container {
                 flex: 1;
                 min-height: 0;
-                overflow: auto;
+                overflow-y: auto;
                 background-color: #1e1e1e;
+                position: relative;
             }
             .CodeMirror {
-                height: 100% !important;
+                height: auto !important;
+                min-height: 100%;
                 width: 100% !important;
                 background-color: #1e1e1e;
                 color: #d4d4d4;
@@ -482,6 +484,10 @@
                 font-size: 14px;
                 line-height: 1.6;
                 text-rendering: optimizeLegibility;
+            }
+            .CodeMirror-scroll {
+                overflow-y: auto !important;
+                max-height: 100%;
             }
             .CodeMirror-gutters {
                 background-color: #252526;
@@ -877,6 +883,7 @@
           autoCloseBrackets: true,
           lineWrapping: true,
           styleActiveLine: true,
+          scrollbarStyle: "native",
           hintOptions: {
             hint: window.hintFailed ? null : CodeMirror.hint.javascript,
             completeSingle: false,
@@ -1125,18 +1132,13 @@
         const restoreConsole = consoleCapture.captureConsole();
 
         // Execute the code
-        const script = document.createElement("script");
-        script.textContent = `
-            (function() {
-                try {
-                    ${code}
-                } catch (e) {
-                    console.error(e.message);
-                }
-            })();
-        `;
-        document.body.appendChild(script);
-        document.body.removeChild(script); // Clean up
+        try {
+          (function () {
+            eval(code);
+          })();
+        } catch (e) {
+          console.error(e.message);
+        }
 
         // Restore console and display output
         restoreConsole();
@@ -1533,5 +1535,5 @@
     }
   }
 
-  let modalElements = createModal();
+  createModal();
 })();

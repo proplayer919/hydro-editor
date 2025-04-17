@@ -151,14 +151,14 @@
     const modal = document.createElement("div");
     modal.className = "hydro-editor-custom-modal";
     modal.innerHTML = `
-      <div class="custom-modal-content">
-        <div class="custom-modal-header">
+      <div class="hydro-editor-custom-modal-content">
+        <div class="hydro-editor-custom-modal-header">
           <span>${title}</span>
-          <button class="custom-modal-close">×</button>
+          <button class="hydro-editor-custom-modal-close">×</button>
         </div>
-        <div class="custom-modal-body">${message}</div>
-        <div class="custom-modal-footer">
-          <button class="custom-modal-ok">OK</button>
+        <div class="hydro-editor-custom-modal-body">${message}</div>
+        <div class="hydro-editor-custom-modal-footer">
+          <button class="hydro-editor-custom-modal-ok">OK</button>
         </div>
       </div>
     `;
@@ -168,8 +168,8 @@
       modal.remove();
     };
 
-    modal.querySelector(".custom-modal-close").addEventListener("click", closeModal);
-    modal.querySelector(".custom-modal-ok").addEventListener("click", closeModal);
+    modal.querySelector(".hydro-editor-custom-modal-close").addEventListener("click", closeModal);
+    modal.querySelector(".hydro-editor-custom-modal-ok").addEventListener("click", closeModal);
   }
 
   function createModal() {
@@ -1081,18 +1081,18 @@
       const modal = document.createElement("div");
       modal.className = "hydro-editor-custom-modal";
       modal.innerHTML = `
-        <div class="custom-modal-content">
-          <div class="custom-modal-header">
+        <div class="hydro-editor-custom-modal-content">
+          <div class="hydro-editor-custom-modal-header">
             <span>Load Script from URL</span>
-            <button class="custom-modal-close">×</button>
+            <button class="hydro-editor-custom-modal-close">×</button>
           </div>
-          <div class="custom-modal-body">
+          <div class="hydro-editor-custom-modal-body">
             <label>Enter URL:</label>
             <input type="text" class="url-input" placeholder="https://example.com/script.js">
           </div>
-          <div class="custom-modal-footer">
-            <button class="custom-modal-ok">Load</button>
-            <button class="custom-modal-cancel">Cancel</button>
+          <div class="hydro-editor-custom-modal-footer">
+            <button class="hydro-editor-custom-modal-ok">Load</button>
+            <button class="hydro-editor-custom-modal-cancel">Cancel</button>
           </div>
         </div>
       `;
@@ -1102,9 +1102,9 @@
         modal.remove();
       };
 
-      modal.querySelector(".custom-modal-close").addEventListener("click", closeModal);
-      modal.querySelector(".custom-modal-cancel").addEventListener("click", closeModal);
-      modal.querySelector(".custom-modal-ok").addEventListener("click", () => {
+      modal.querySelector(".hydro-editor-custom-modal-close").addEventListener("click", closeModal);
+      modal.querySelector(".hydro-editor-custom-modal-cancel").addEventListener("click", closeModal);
+      modal.querySelector(".hydro-editor-custom-modal-ok").addEventListener("click", () => {
         const urlInput = modal.querySelector(".url-input").value.trim();
         if (!urlInput) {
           showCustomModal("Error", "Please enter a valid URL.");
@@ -1151,15 +1151,15 @@
       const modal = document.createElement("div");
       modal.className = "hydro-editor-custom-modal";
       modal.innerHTML = `
-        <div class="custom-modal-content">
-          <div class="custom-modal-header">
+        <div class="hydro-editor-custom-modal-content">
+          <div class="hydro-editor-custom-modal-header">
             <span>Confirm</span>
-            <button class="custom-modal-close">×</button>
+            <button class="hydro-editor-custom-modal-close">×</button>
           </div>
-          <div class="custom-modal-body">Are you sure you want to clear the current tab?</div>
-          <div class="custom-modal-footer">
-            <button class="custom-modal-ok">Yes</button>
-            <button class="custom-modal-cancel">No</button>
+          <div class="hydro-editor-custom-modal-body">Are you sure you want to clear the current tab?</div>
+          <div class="hydro-editor-custom-modal-footer">
+            <button class="hydro-editor-custom-modal-ok">Yes</button>
+            <button class="hydro-editor-custom-modal-cancel">No</button>
           </div>
         </div>
       `;
@@ -1169,9 +1169,9 @@
         modal.remove();
       };
 
-      modal.querySelector(".custom-modal-close").addEventListener("click", closeModal);
-      modal.querySelector(".custom-modal-cancel").addEventListener("click", closeModal);
-      modal.querySelector(".custom-modal-ok").addEventListener("click", () => {
+      modal.querySelector(".hydro-editor-custom-modal-close").addEventListener("click", closeModal);
+      modal.querySelector(".hydro-editor-custom-modal-cancel").addEventListener("click", closeModal);
+      modal.querySelector(".hydro-editor-custom-modal-ok").addEventListener("click", () => {
         editors[activeTabIndex].setValue("");
         closeModal();
       });
@@ -1282,15 +1282,15 @@
       const modal = document.createElement("div");
       modal.className = "hydro-editor-custom-modal";
       modal.innerHTML = `
-        <div class="custom-modal-content">
-          <div class="custom-modal-header">
+        <div class="hydro-editor-custom-modal-content">
+          <div class="hydro-editor-custom-modal-header">
             <span>Confirm</span>
-            <button class="custom-modal-close">×</button>
+            <button class="hydro-editor-custom-modal-close">×</button>
           </div>
-          <div class="custom-modal-body">Are you sure you want to clear the page content except for the Hydro Editor?</div>
-          <div class="custom-modal-footer">
-            <button class="custom-modal-ok">Yes</button>
-            <button class="custom-modal-cancel">No</button>
+          <div class="hydro-editor-custom-modal-body">Are you sure you want to clear the page content except for the Hydro Editor?</div>
+          <div class="hydro-editor-custom-modal-footer">
+            <button class="hydro-editor-custom-modal-ok">Yes</button>
+            <button class="hydro-editor-custom-modal-cancel">No</button>
           </div>
         </div>
       `;
@@ -1300,12 +1300,12 @@
         modal.remove();
       };
 
-      modal.querySelector(".custom-modal-close").addEventListener("click", closeModal);
-      modal.querySelector(".custom-modal-cancel").addEventListener("click", closeModal);
-      modal.querySelector(".custom-modal-ok").addEventListener("click", () => {
+      modal.querySelector(".hydro-editor-custom-modal-close").addEventListener("click", closeModal);
+      modal.querySelector(".hydro-editor-custom-modal-cancel").addEventListener("click", closeModal);
+      modal.querySelector(".hydro-editor-custom-modal-ok").addEventListener("click", () => {
         const bodyChildren = Array.from(document.body.children);
         bodyChildren.forEach((child) => {
-          if (child !== modal && !child.classList.contains("custom-modal")) {
+          if (child !== modal && !child.classList.contains("hydro-editor-custom-modal")) {
             child.remove();
           }
         });

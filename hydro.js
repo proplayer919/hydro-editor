@@ -1132,13 +1132,20 @@
         const restoreConsole = consoleCapture.captureConsole();
 
         // Execute the code
-        try {
-          (function () {
-            eval(code);
-          })();
-        } catch (e) {
-          console.error(e.message);
-        }
+        const script = document.createElement("script");
+        script.textContent = `
+            (function() {
+                try {
+                    ${code}
+                } catch (e) {
+                    console.error(e.message);
+                }
+            })();
+        `;
+        script.type = "module";
+
+        document.body.appendChild(script);
+        document.body.removeChild(script); // Remove script after execution
 
         // Restore console and display output
         restoreConsole();

@@ -729,7 +729,7 @@
     let viewSubmenu = document.createElement("div");
     viewSubmenu.className = "hydro-editor-toolbar-submenu";
     let pageInfoBtn = document.createElement("button");
-    pageInfoBtn.textContent = "hydro-editor-Page Info";
+    pageInfoBtn.textContent = "Page Info";
     let loadScriptsBtn = document.createElement("button");
     loadScriptsBtn.textContent = "Load Scripts";
     let clearPageBtn = document.createElement("button");
@@ -1306,7 +1306,7 @@
       modal.querySelector(".hydro-editor-custom-modal-ok").addEventListener("click", () => {
         const bodyChildren = Array.from(document.body.children);
         bodyChildren.forEach((child) => {
-          if (child !== modal && !child.classList.contains("hydro-editor-custom-modal")) {
+          if (child !== modal && !child.classList.contains("hydro-editor-modal")) {
             child.remove();
           }
         });

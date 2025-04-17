@@ -199,6 +199,7 @@
                 animation: slideIn 0.3s ease-out;
                 color: #d4d4d4;
                 overflow: hidden;
+                z-index: 10000;
             }
             .hydro-editor-header {
                 background: linear-gradient(90deg, #2d2d2d, #333333);
